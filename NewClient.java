@@ -149,7 +149,7 @@ public class NewClient extends JFrame implements ActionListener {
                 vertical.add(Box.createVerticalStrut(15));
                 mp.add(vertical, BorderLayout.PAGE_START);
 
-                client.validate();
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
