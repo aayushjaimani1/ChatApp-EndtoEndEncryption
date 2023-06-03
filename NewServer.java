@@ -68,3 +68,53 @@ public class NewServer extends JFrame implements ActionListener {
         send.setFont(new Font("SAN_SERIF", Font.PLAIN, 16));
         add(send);
     }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            String str = text.getText();
+
+            JPanel p2 = formatLabel(str);
+
+            mp.setLayout(new BorderLayout());
+
+            JPanel right = new JPanel(new BorderLayout());
+            right.add(p2, BorderLayout.LINE_END);
+            vertical.add(right);
+            vertical.add(Box.createVerticalStrut(15));
+
+            mp.add(vertical, BorderLayout.PAGE_START);
+
+            String encodedMessage = encodeMessage(str);
+            System.out.println("Encoded Message: " + encodedMessage);
+            dout.writeUTF(encodedMessage);
+
+            text.setText("");
+
+            repaint();
+            revalidate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public JPanel formatLabel(String str) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel output = new JLabel("<html><p style=\"width: 150px\">" + str + "</p></html>");
+        output.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        output.setBackground(new Color(37, 211, 102));
+        output.setOpaque(true);
+        output.setBorder(new EmptyBorder(15, 15, 15, 50));
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+        JLabel time = new JLabel();
+        time.setText(sdf.format(cal.getTime()));
+
+        panel.add(output);
+        panel.add(time);
+
+        return panel;
+    }
