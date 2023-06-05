@@ -118,3 +118,40 @@ public class NewServer extends JFrame implements ActionListener {
 
         return panel;
     }
+
+    public String encodeMessage(String message) {
+        byte[] encodedBytes = Base64.getEncoder().encode(message.getBytes());
+        return new String(encodedBytes);
+    }
+
+    public static String decodeMessage(String encodedMessage) {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedMessage.getBytes());
+        return new String(decodedBytes);
+    }
+
+    public static void main(String[] args) {
+        NewServer server = new NewServer();
+        try {
+            ServerSocket ss = new ServerSocket(6001);
+            while (true) {
+                Socket s = ss.accept();
+                DataInputStream din = new DataInputStream(s.getInputStream());
+                dout = new DataOutputStream(s.getOutputStream());
+
+                while (true) {
+                    String encodedMsg = din.readUTF();
+                    String decodedMsg = decodeMessage(encodedMsg);
+                    JPanel panel = server.formatLabel(decodedMsg);
+
+                    JPanel left = new JPanel(new BorderLayout());
+                    left.add(panel, BorderLayout.LINE_START);
+                    vertical.add(left);
+                    server.revalidate();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}
