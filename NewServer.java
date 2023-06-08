@@ -146,7 +146,7 @@ public class NewServer extends JFrame implements ActionListener {
                     JPanel left = new JPanel(new BorderLayout());
                     left.add(panel, BorderLayout.LINE_START);
                     vertical.add(left);
-                    
+                    server.revalidate();
                 }
             }
         } catch (Exception e) {
